@@ -1,49 +1,69 @@
 class Stats { 
-    data1: HTMLInputElement;
-    data2: HTMLInputElement;
-    data3: HTMLInputElement;
-    data4: HTMLInputElement;
-
+    number_of_inputs_element:HTMLInputElement;
     min: HTMLInputElement;
     max: HTMLInputElement;
     avg: HTMLInputElement;
     sum: HTMLInputElement;
 
+    number_of_inputs: number;
+    inputs_elements : Array<HTMLInputElement> = [];
     constructor() { 
         this.getElements();
-        this.bindEvent();
+        this.bindNumberOfInputs();
     }
 
     getElements() { 
-        this.data1 = document.querySelector("#data1");
-        this.data2 = document.querySelector("#data2");
-        this.data3 = document.querySelector("#data3");
-        this.data4 = document.querySelector("#data4");
-
+        this.number_of_inputs_element = document.querySelector("#number_of_inputs");
         this.min = document.querySelector("#min");
         this.max = document.querySelector("#max");
         this.avg = document.querySelector("#avg");
         this.sum = document.querySelector("#sum");
     }
 
+    bindNumberOfInputs() { 
+        this.number_of_inputs_element.addEventListener("input", () => {
+            this.number_of_inputs = parseInt(this.number_of_inputs_element.value);
+            this.pushInputsToTable(this.number_of_inputs);
+        })
+    }
+
+    pushInputsToTable(number_of_inputs : number) { 
+        for(let i = 0; i < number_of_inputs; i++) { 
+            let input = document.createElement("input");
+            this.inputs_elements.push(input);
+        }
+        this.generateInputs();
+    }
+
+    generateInputs() { 
+        let body = document.querySelector("body");
+        this.inputs_elements.forEach(input => {
+            body.appendChild(input);
+        });
+
+        this.bindEvent();
+    }
+
     bindEvent() { 
-        this.data1.addEventListener("input", () => this.calculateData() );
-        this.data2.addEventListener("input", () => this.calculateData() );
-        this.data3.addEventListener("input", () => this.calculateData() );
-        this.data4.addEventListener("input", () => this.calculateData() );
+        this.inputs_elements.forEach(input => {
+            input.addEventListener("input", () => this.calculateData())
+        });
     }
 
     calculateData() { 
-        var val1:number = +this.data1.value;
-        var val2:number = +this.data2.value;
-        var val3:number = +this.data3.value;
-        var val4:number = +this.data4.value;
-        const sum = val1 + val2 + val3 + val4;
-        const avg = sum/4;
-        const min = Math.min(val1, val2, val3, val4);
-        const max = Math.max(val1, val2, val3, val4);
-
-        this.showStats(sum, min,max, avg);
+        let max  = Math.max(parseInt(this.number_of_inputs_element.value));
+        let min  = Math.min(parseInt(this.number_of_inputs_element.value));
+        let avg : number = 0;
+        let sum : number = 0;
+        this.inputs_elements.forEach(input => { 
+            sum += +input.value;
+            if(+input.value > max) 
+                max = +input.value
+            if(+input.value < min) 
+                min = +input.value
+        }) 
+        avg = sum / this.number_of_inputs;
+        this.showStats(sum, min, max, avg);
     }
 
     showStats(sum: number, min: number, max: number, avg: number) { 
