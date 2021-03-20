@@ -7,6 +7,8 @@ class Stats {
 
     number_of_inputs: number;
     inputs_elements : Array<HTMLInputElement> = [];
+    deleteButton: HTMLElement;
+
     constructor() { 
         this.getElements();
         this.bindNumberOfInputs();
@@ -28,17 +30,25 @@ class Stats {
     }
 
     pushInputsToTable(number_of_inputs : number) { 
+        this.inputs_elements = []; // clear table
         for(let i = 0; i < number_of_inputs; i++) { 
             let input = document.createElement("input");
             this.inputs_elements.push(input);
         }
-        this.generateInputs();
+        this.generateInputsAndCheckbo();
     }
 
-    generateInputs() { 
-        let body = document.querySelector("body");
-        this.inputs_elements.forEach(input => {
-            body.appendChild(input);
+    generateInputsAndCheckbo() { 
+        let conteiner = document.querySelector("#conteiner");
+        conteiner.innerHTML = ""; // clear conteiner
+        this.inputs_elements.forEach((input, index) => {
+            input.id = "input"+index.toString(); 
+            conteiner.appendChild(input);
+            input.value = index.toString();
+            let checkBox = document.createElement("input");
+            checkBox.type = "checkbox";
+            checkBox.value = index.toString();
+            input.after(checkBox);
         });
 
         this.bindEvent();
@@ -48,11 +58,14 @@ class Stats {
         this.inputs_elements.forEach(input => {
             input.addEventListener("input", () => this.calculateData())
         });
+
+        this.deleteButton = document.querySelector("#delete");
+        this.deleteButton.addEventListener("click", () => this.deleteInput());
     }
 
     calculateData() { 
-        let max  = Math.max(parseInt(this.number_of_inputs_element.value));
-        let min  = Math.min(parseInt(this.number_of_inputs_element.value));
+        let max : number = Math.max(parseInt(this.number_of_inputs_element.value));
+        let min : number = Math.min(parseInt(this.number_of_inputs_element.value));
         let avg : number = 0;
         let sum : number = 0;
         this.inputs_elements.forEach(input => { 
@@ -71,6 +84,25 @@ class Stats {
         this.min.value = min.toString();
         this.avg.value = avg.toString();
         this.sum.value = sum.toString();
+    }
+
+    deleteInput() { 
+        let checked : Array<number> = this.getChecked();
+        checked.forEach((index:number) => {
+            let elementToDelete = document.querySelector(`#input${index}`);
+            elementToDelete.remove();
+        });
+    }
+
+    getChecked() : Array<number>  {
+        const indexses: Array<number> = [];
+        const checked = document.querySelectorAll<HTMLInputElement>('input[type="checkbox"]:checked');
+        checked.forEach(checkbox => { 
+            checkbox.remove();
+            indexses.push(parseInt(checkbox.value));
+        })
+
+        return indexses;
     }
 }
 
