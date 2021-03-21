@@ -19,16 +19,24 @@ var Stats = /** @class */ (function () {
         });
     };
     Stats.prototype.pushInputsToTable = function (number_of_inputs) {
+        this.inputs_elements = [];
         for (var i = 0; i < number_of_inputs; i++) {
             var input = document.createElement("input");
             this.inputs_elements.push(input);
         }
-        this.generateInputs();
+        this.generateInputsAndCheckbo();
     };
-    Stats.prototype.generateInputs = function () {
-        var body = document.querySelector("body");
-        this.inputs_elements.forEach(function (input) {
-            body.appendChild(input);
+    Stats.prototype.generateInputsAndCheckbo = function () {
+        var conteiner = document.querySelector("#conteiner");
+        conteiner.innerHTML = "";
+        this.inputs_elements.forEach(function (input, index) {
+            input.id = "input" + index.toString();
+            conteiner.appendChild(input);
+            input.value = index.toString();
+            var checkBox = document.createElement("input");
+            checkBox.type = "checkbox";
+            checkBox.value = index.toString();
+            input.after(checkBox);
         });
         this.bindEvent();
     };
@@ -37,6 +45,8 @@ var Stats = /** @class */ (function () {
         this.inputs_elements.forEach(function (input) {
             input.addEventListener("input", function () { return _this.calculateData(); });
         });
+        this.deleteButton = document.querySelector("#delete");
+        this.deleteButton.addEventListener("click", function () { return _this.deleteInput(); });
     };
     Stats.prototype.calculateData = function () {
         var max = Math.max(parseInt(this.number_of_inputs_element.value));
@@ -58,6 +68,22 @@ var Stats = /** @class */ (function () {
         this.min.value = min.toString();
         this.avg.value = avg.toString();
         this.sum.value = sum.toString();
+    };
+    Stats.prototype.deleteInput = function () {
+        var checked = this.getChecked();
+        checked.forEach(function (index) {
+            var elementToDelete = document.querySelector("#input" + index);
+            elementToDelete.remove();
+        });
+    };
+    Stats.prototype.getChecked = function () {
+        var indexses = [];
+        var checked = document.querySelectorAll('input[type="checkbox"]:checked');
+        checked.forEach(function (checkbox) {
+            checkbox.remove();
+            indexses.push(parseInt(checkbox.value));
+        });
+        return indexses;
     };
     return Stats;
 }());
