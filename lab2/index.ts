@@ -1,20 +1,56 @@
 let clapSound: HTMLAudioElement
 let boomSound: HTMLAudioElement
 
+
+
+let isRecording : boolean = false;
+let timeStartRecording;
+let tempRecordingCannal: number = 0;
+
 const channel1: any[] = [];
+const channel2: any[] = [];
+
 appStart();
 
 function appStart(): void {
     window.addEventListener('keypress', onKeyDown);
-    const btnPlayChannel1 = document.querySelector('#playChannel1')
-    btnPlayChannel1.addEventListener('click', onPlayChannel1)
+    bindGetPlayStopRecord();
     getAudioTags();
 }
 
-function onPlayChannel1(): void {
-    channel1.forEach(sound => {
+function onPlayChannel1(ev): void {
+    eval('channel' + ev.currentTarget.dataset.play).forEach(sound => {
         setTimeout(() => playSound(sound.key), sound.time)
     })
+}
+
+function bindGetPlayStopRecord():void { 
+    const btnsPlay = document.querySelectorAll(`[data-play]`);
+    const btnsStop : NodeListOf<Element> = document.querySelectorAll(`[data-stop]`);
+    const btnsRecord : NodeListOf<Element> = document.querySelectorAll(`[data-record]`);
+
+    // trzeba to jakoś zamienieć bo wygląda bardzo źle
+    btnsRecord.forEach(element => {
+        element.addEventListener("click", startRecord);
+    });
+    
+    btnsStop.forEach(element => {
+        element.addEventListener("click", stopRecord);
+    });
+
+    btnsPlay.forEach(element => {
+        element.addEventListener("click", onPlayChannel1);
+    });
+}
+
+function startRecord(ev) { 
+    tempRecordingCannal = ev.currentTarget.dataset.record;
+    isRecording = true;
+    timeStartRecording = ev.timeStamp
+}
+
+function stopRecord(){ 
+    isRecording = false;
 }
 
 function getAudioTags() {
@@ -23,11 +59,15 @@ function getAudioTags() {
 }
 
 function onKeyDown(ev: KeyboardEvent): void {
+    if(isRecording)
+        record(ev);
+    playSound(ev.key);
+}
+
+function record(ev) { 
     const key = ev.key;
-    const time = ev.timeStamp;
-    channel1.push({ key, time })
-    playSound(key);
-    console.log(channel1);
+    const time = ev.timeStamp - timeStartRecording;
+    eval("channel"+tempRecordingCannal).push({ key, time })
 }
 
 function playSound(key: string) {
