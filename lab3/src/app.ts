@@ -1,12 +1,18 @@
 export class App {
     opwApiKey = '50d53005c0fd5f556bb4ef15224c4209';
     constructor() {
-        this.getCityInfo('zakopane')
+        const button = document.getElementById("find");
+        button.addEventListener("click", () => {
+            const inputElement = (<HTMLInputElement>document.getElementById("city")).value;
+            this.getCityInfo(inputElement);
+        });
     }
+
     async getCityInfo(city: string) {
-        const weather = await this.getWeather('zakopane');
+        const weather = await this.getWeather(city);
         this.saveData(weather);
     }
+
     async getWeather(city: string): Promise<any> {
         const openWeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${this.opwApiKey}`;
         const weatherResponse = await fetch(openWeatherUrl);
