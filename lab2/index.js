@@ -1,8 +1,12 @@
-var clapSound;
-var boomSound;
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
+var soundsTable;
 var isRecording = false;
 var timeStartRecording;
-var tempRecordingCannal = 0;
+var tempRecordingChannel = 0;
 var channel1 = [];
 var channel2 = [];
 appStart();
@@ -11,7 +15,7 @@ function appStart() {
     bindGetPlayStopRecord();
     getAudioTags();
 }
-function onPlayChannel1(ev) {
+function onPlayChannel(ev) {
     eval('channel' + ev.currentTarget.dataset.play).forEach(function (sound) {
         setTimeout(function () { return playSound(sound.key); }, sound.time);
     });
@@ -28,11 +32,11 @@ function bindGetPlayStopRecord() {
         element.addEventListener("click", stopRecord);
     });
     btnsPlay.forEach(function (element) {
-        element.addEventListener("click", onPlayChannel1);
+        element.addEventListener("click", onPlayChannel);
     });
 }
 function startRecord(ev) {
-    tempRecordingCannal = ev.currentTarget.dataset.record;
+    tempRecordingChannel = ev.currentTarget.dataset.record;
     isRecording = true;
     timeStartRecording = ev.timeStamp;
 }
@@ -40,8 +44,8 @@ function stopRecord() {
     isRecording = false;
 }
 function getAudioTags() {
-    clapSound = document.querySelector('[data-sound="clap"]');
-    boomSound = document.querySelector('[data-sound="boom"]');
+    soundsTable = document.querySelectorAll('[data-sound]');
+    console.log(soundsTable);
 }
 function onKeyDown(ev) {
     if (isRecording)
@@ -51,17 +55,23 @@ function onKeyDown(ev) {
 function record(ev) {
     var key = ev.key;
     var time = ev.timeStamp - timeStartRecording;
-    eval("channel" + tempRecordingCannal).push({ key: key, time: time });
+    eval("channel" + tempRecordingChannel).push({ key: key, time: time });
 }
 function playSound(key) {
     switch (key) {
         case 'a':
-            clapSound.currentTime = 0;
-            clapSound.play();
+            soundsTable[0].currentTime = 0;
+            soundsTable[0].play();
+            tempPlaySound("clap");
             break;
         case 's':
-            boomSound.currentTime = 0;
-            boomSound.play();
+            soundsTable[1].currentTime = 0;
+            soundsTable[1].play();
             break;
     }
+}
+function tempPlaySound(name) {
+    var sound = __spreadArray([], soundsTable).filter(function (el) { return el.dataset.sound == name; });
+    sound.currentTime = 0;
+    console.log(sound);
 }

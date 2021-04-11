@@ -1,11 +1,8 @@
-let clapSound: HTMLAudioElement
-let boomSound: HTMLAudioElement
-
-
+let soundsTable : NodeListOf<HTMLAudioElement>;
 
 let isRecording : boolean = false;
 let timeStartRecording;
-let tempRecordingCannal: number = 0;
+let tempRecordingChannel: number = 0;
 
 const channel1: any[] = [];
 const channel2: any[] = [];
@@ -18,7 +15,7 @@ function appStart(): void {
     getAudioTags();
 }
 
-function onPlayChannel1(ev): void {
+function onPlayChannel(ev): void {
     eval('channel' + ev.currentTarget.dataset.play).forEach(sound => {
         setTimeout(() => playSound(sound.key), sound.time)
     })
@@ -39,12 +36,12 @@ function bindGetPlayStopRecord():void {
     });
 
     btnsPlay.forEach(element => {
-        element.addEventListener("click", onPlayChannel1);
+        element.addEventListener("click", onPlayChannel);
     });
 }
 
 function startRecord(ev) { 
-    tempRecordingCannal = ev.currentTarget.dataset.record;
+    tempRecordingChannel = ev.currentTarget.dataset.record;
     isRecording = true;
     timeStartRecording = ev.timeStamp
 }
@@ -54,8 +51,8 @@ function stopRecord(){
 }
 
 function getAudioTags() {
-    clapSound = document.querySelector('[data-sound="clap"]');
-    boomSound = document.querySelector('[data-sound="boom"]');
+    soundsTable = document.querySelectorAll('[data-sound]');
+    console.log(soundsTable);
 }
 
 function onKeyDown(ev: KeyboardEvent): void {
@@ -67,18 +64,19 @@ function onKeyDown(ev: KeyboardEvent): void {
 function record(ev) { 
     const key = ev.key;
     const time = ev.timeStamp - timeStartRecording;
-    eval("channel"+tempRecordingCannal).push({ key, time })
+    eval("channel"+tempRecordingChannel).push({ key, time })
 }
 
 function playSound(key: string) {
     switch (key) {
         case 'a':
-            clapSound.currentTime = 0;
-            clapSound.play();
+            soundsTable[0].currentTime = 0;
+            soundsTable[0].play();
             break;
         case 's':
-            boomSound.currentTime = 0;
-            boomSound.play();
+            soundsTable[1].currentTime = 0;
+            soundsTable[1].play();
             break;
     }
 }
+
