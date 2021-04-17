@@ -26,17 +26,17 @@ export class App {
     }
 
     generateWeatherView(data : any) { 
-        console.log(data);
         let div = document.createElement("div");
-        let h3 = document.createElement("h3");
-        let h5 = document.createElement("h5");
+        let spanWeatherStatus = document.createElement("span");
+        let p = document.createElement("p");
         let spanTemp = document.createElement("span");
-        document.querySelector("body").appendChild(div);
-        h3.textContent = data.name;
-        h5.textContent = data.weather[0].description;
-        spanTemp.textContent = Math.round(data.main.temp - 273).toString();
-        div.appendChild(h3);
-        div.appendChild(h5);
+        div.classList.add("container");
+        document.querySelector(".container-weather").appendChild(div);
+        spanWeatherStatus.textContent = data.name;
+        p.textContent = data.weather[0].description;
+        spanTemp.textContent = Math.round(data.main.temp - 273).toString() + "°C";
+        div.appendChild(spanWeatherStatus);
+        div.appendChild(p);
         div.appendChild(spanTemp);
     }
 
