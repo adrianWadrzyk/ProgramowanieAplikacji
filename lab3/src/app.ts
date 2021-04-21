@@ -1,19 +1,23 @@
 export class App {
     opwApiKey = '50d53005c0fd5f556bb4ef15224c4209';
     constructor() {
+        let storage = this.getData();
         const button = document.getElementById("find");
-        button.addEventListener("click", () => {
+        button.addEventListener("click", e => {
+            e.preventDefault();
             const inputElement = (<HTMLInputElement>document.getElementById("city")).value;
-            this.getCityInfo(inputElement);
+            if(storage != inputElement)
+                this.getCityInfo(inputElement);
         });
 
-        let storage = this.getData();
-        if(storage.length) 
+        if(storage.length) {
             this.getCityInfo(storage);
+        }
     }
 
     async getCityInfo(city: string) {
         const weather = await this.getWeather(city);
+        console.log(weather);
         this.saveData(weather);
         this.generateWeatherView(weather);
     }
@@ -30,6 +34,8 @@ export class App {
         let spanWeatherStatus = document.createElement("span");
         let p = document.createElement("p");
         let spanTemp = document.createElement("span");
+        let img = document.createElement("img");
+        img.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`
         div.classList.add("container");
         document.querySelector(".container-weather").appendChild(div);
         spanWeatherStatus.textContent = data.name;
@@ -37,6 +43,7 @@ export class App {
         spanTemp.textContent = Math.round(data.main.temp - 273).toString() + "°C";
         div.appendChild(spanWeatherStatus);
         div.appendChild(p);
+        div.appendChild(img);
         div.appendChild(spanTemp);
     }
 

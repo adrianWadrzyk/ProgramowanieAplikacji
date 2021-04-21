@@ -17,9 +17,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-items: center;
-  margin: 0 10px;
+  margin: 10px;
 }
-
 
 .form { 
   display: flex;
@@ -29,7 +28,7 @@ body {
 
 #city { 
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: solid 1px black;
   background: inherit;
 }
 
@@ -37,4 +36,8 @@ body {
   border: none;
   background: inherit;
   margin-left: 10px;
+}
+
+#find:hover { 
+  cursor: pointer;
 }
