@@ -1,14 +1,11 @@
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 var soundsTable;
 var isRecording = false;
 var timeStartRecording;
 var tempRecordingChannel = 0;
 var channel1 = [];
 var channel2 = [];
+var channel3 = [];
+var channel4 = [];
 appStart();
 function appStart() {
     window.addEventListener('keypress', onKeyDown);
@@ -24,7 +21,6 @@ function bindGetPlayStopRecord() {
     var btnsPlay = document.querySelectorAll("[data-play]");
     var btnsStop = document.querySelectorAll("[data-stop]");
     var btnsRecord = document.querySelectorAll("[data-record]");
-    // trzeba to jakoś zamienieć bo wygląda bardzo źle
     btnsRecord.forEach(function (element) {
         element.addEventListener("click", startRecord);
     });
@@ -62,16 +58,22 @@ function playSound(key) {
         case 'a':
             soundsTable[0].currentTime = 0;
             soundsTable[0].play();
-            tempPlaySound("clap");
             break;
         case 's':
             soundsTable[1].currentTime = 0;
             soundsTable[1].play();
             break;
+        case 'd':
+            soundsTable[2].currentTime = 0;
+            soundsTable[2].play();
+            break;
+        case 'q':
+            soundsTable[3].currentTime = 0;
+            soundsTable[3].play();
+            break;
+        case 'w':
+            soundsTable[4].currentTime = 0;
+            soundsTable[4].play();
+            break;
     }
-}
-function tempPlaySound(name) {
-    var sound = __spreadArray([], soundsTable).filter(function (el) { return el.dataset.sound == name; });
-    sound.currentTime = 0;
-    console.log(sound);
 }

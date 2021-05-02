@@ -4,17 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Drumkit</title>
 </head>
 <body>
     <audio src="sounds/clap.wav" data-sound="clap"></audio>
     <audio src="sounds/boom.wav" data-sound="boom"></audio>
-    <button id="playChannel1" data-play="1">Play channel 1</button>
-    <button id="recordCannal1" data-record="1">Record 1</button>
-    <button id="stopCannal1" data-stop="1">Stop 1</button>
-    <button id="playChannel2" data-play="2" >Play channel 2</button>
-    <button id="recordCannal2" data-record="2">Record 2</button>
-    <button id="stopCannal2" data-stop="2">Stop 2</button>
+    <audio src="sounds/hihat.wav" data-sound="hihat"></audio>
+    <audio src="sounds/kick.wav" data-sound="kick"></audio>
+    <audio src="sounds/ride.wav" data-sound="ride"></audio>
+    <div class="description"> 
+        <p>Press a on keyboard = sound clap </p>
+        <p>Press s on keyboard = sound boom </p>
+        <p>Press d on keyboard = sound hihat </p>
+        <p>Press q on keyboard = sound kick </p>
+        <p>Press w on keyboard = sound ride </p>
+
+    </div>
+    <div class="channelConteiner">
+        <button id="playChannel1" data-play="1">Play channel 1</button>
+        <button id="recordCannal1" data-record="1">Record 1</button>
+        <button id="stopCannal1" data-stop="1">Stop 1</button>
+    </div>
+     <div class="channelConteiner">
+        <button id="playChannel2" data-play="2" >Play channel 2</button>
+        <button id="recordCannal2" data-record="2">Record 2</button>
+        <button id="stopCannal2" data-stop="2">Stop 2</button>
+    </div>
+     <div class="channelConteiner">
+        <button id="playChannel3" data-play="3" >Play channel 3</button>
+        <button id="recordCannal3" data-record="3">Record 3</button>
+        <button id="stopCannal3" data-stop="3">Stop 3</button>
+    </div>
+     <div class="channelConteiner">
+        <button id="playChannel4" data-play="4" >Play channel 4</button>
+        <button id="recordCannal4" data-record="4">Record 4</button>
+        <button id="stopCannal4" data-stop="4">Stop 4</button>
+    </div>
+
     
     <script src="index.js"></script>
 </body>

@@ -1,0 +1,16 @@
+.description { 
+    text-align: center;
+}
+
+
+.channelConteiner { 
+    display: flex;
+    justify-content: center;
+}
+
+button{ 
+    margin: 10px;
+    background: none;
+    border: 1px solid black;
+    padding: 10px;
+}

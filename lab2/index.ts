@@ -6,6 +6,9 @@ let tempRecordingChannel: number = 0;
 
 const channel1: any[] = [];
 const channel2: any[] = [];
+const channel3: any[] = [];
+const channel4: any[] = [];
+
 
 appStart();
 
@@ -26,7 +29,6 @@ function bindGetPlayStopRecord():void {
     const btnsStop : NodeListOf<Element> = document.querySelectorAll(`[data-stop]`);
     const btnsRecord : NodeListOf<Element> = document.querySelectorAll(`[data-record]`);
 
-    // trzeba to jakoś zamienieć bo wygląda bardzo źle
     btnsRecord.forEach(element => {
         element.addEventListener("click", startRecord);
     });
@@ -76,6 +78,18 @@ function playSound(key: string) {
         case 's':
             soundsTable[1].currentTime = 0;
             soundsTable[1].play();
+            break;
+        case 'd':
+            soundsTable[2].currentTime = 0;
+            soundsTable[2].play();
+            break;
+        case 'q':
+            soundsTable[3].currentTime = 0;
+            soundsTable[3].play();
+            break;
+        case 'w':
+            soundsTable[4].currentTime = 0;
+            soundsTable[4].play();
             break;
     }
 }
