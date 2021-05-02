@@ -42,13 +42,15 @@ class Stats {
         let conteiner = document.querySelector("#conteiner");
         conteiner.innerHTML = ""; // clear conteiner
         this.inputs_elements.forEach((input, index) => {
+            let div = document.createElement("div");
+            conteiner.appendChild(div);
             input.id = "input"+index.toString(); 
-            conteiner.appendChild(input);
+            div.appendChild(input);
             input.value = index.toString();
             let checkBox = document.createElement("input");
             checkBox.type = "checkbox";
             checkBox.value = index.toString();
-            input.after(checkBox);
+            input.before(checkBox);
         });
 
         this.bindEvent();

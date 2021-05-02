@@ -5,14 +5,16 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <input type="text" id="number_of_inputs"></input>
-        <input type="text" disabled class="sum" id="sum"></input>
-        <input type="text" disabled class="avg" id="avg"></input>
-        <input type="text" disabled class="min" id="min"></input>
-        <input type="text" disabled class="max" id="max"></input>
+        <input type="text" id="number_of_inputs" value="Liczba inputów"></input>
+        <div class="containerSummary">
+            <input type="text" disabled class="sum" id="sum"></input>
+            <input type="text" disabled class="avg" id="avg"></input>
+            <input type="text" disabled class="min" id="min"></input>
+            <input type="text" disabled class="max" id="max"></input>
+         </div>
         <div id="conteiner"></div>
         <button id="delete">Delete checked input</button>
         <script src="script.js" async defer></script>

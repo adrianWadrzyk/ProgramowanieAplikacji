@@ -19,7 +19,7 @@ var Stats = /** @class */ (function () {
         });
     };
     Stats.prototype.pushInputsToTable = function (number_of_inputs) {
-        this.inputs_elements = [];
+        this.inputs_elements = []; // clear table
         for (var i = 0; i < number_of_inputs; i++) {
             var input = document.createElement("input");
             this.inputs_elements.push(input);
@@ -28,15 +28,17 @@ var Stats = /** @class */ (function () {
     };
     Stats.prototype.generateInputsAndCheckbo = function () {
         var conteiner = document.querySelector("#conteiner");
-        conteiner.innerHTML = "";
+        conteiner.innerHTML = ""; // clear conteiner
         this.inputs_elements.forEach(function (input, index) {
+            var div = document.createElement("div");
+            conteiner.appendChild(div);
             input.id = "input" + index.toString();
-            conteiner.appendChild(input);
+            div.appendChild(input);
             input.value = index.toString();
             var checkBox = document.createElement("input");
             checkBox.type = "checkbox";
             checkBox.value = index.toString();
-            input.after(checkBox);
+            input.before(checkBox);
         });
         this.bindEvent();
     };

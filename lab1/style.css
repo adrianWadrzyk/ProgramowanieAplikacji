@@ -1,0 +1,33 @@
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.containerSummary { 
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+input{ 
+    margin: 10px;
+}
+
+#number_of_inputs { 
+    margin: 20px auto;
+    padding-left: 20px;
+}
+
+#delete { 
+    width: 30%;
+    margin: 20px auto;
+}
+
+#conteiner { 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+}
