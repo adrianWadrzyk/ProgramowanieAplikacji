@@ -1,33 +1,28 @@
 export class App {
     opwApiKey = '50d53005c0fd5f556bb4ef15224c4209';
-    city : Array<string> = [];
+    city : string = "";
     constructor() {
         const button = document.getElementById("find");
         let storage = this.getData();
         button.addEventListener("click", e => {
             e.preventDefault();
             const inputElement = (<HTMLInputElement>document.getElementById("city")).value;
-            if(storage.length){
-                let filtered = storage.filter( (ele : string) => ele.includes(inputElement));
-                if(!filtered)
-                    this.getCityInfo(inputElement);
-            } else { 
-                this.getCityInfo(inputElement);
-            }
+            if(storage.findIndex((val: string) => val == inputElement) == -1)
+                this.getCityInfo(inputElement, true);
         });
 
         if(storage.length) {
-            storage.forEach((element: string )=> {
-                this.getCityInfo(element);
+            storage.forEach((cityName : string) => {
+                this.getCityInfo(cityName, false);
             });
         }
     }
 
-    async getCityInfo(city: string) {
-        console.log(city)
+    async getCityInfo(city: string, save: boolean) {
         const weather = await this.getWeather(city);
-        this.city.push(city)
-        this.saveData(this.city);
+        this.city = city
+        if(save)
+            this.saveData(this.city);
         this.generateWeatherView(weather);
     }
 
@@ -63,18 +58,23 @@ export class App {
         div.appendChild(spanTemp);
     }
 
-    saveData(data: Array<string>) {        
-        
-        localStorage.setItem('weatherData', JSON.stringify(data));
+    saveData(data: string) {        
+        const currentData = this.getData();
+        const index = currentData.findIndex((val : string) => val == data);
+            if(index == -1) { 
+                currentData.push(data);
+                localStorage.setItem('weatherData', JSON.stringify(currentData));
+                return;
+            } 
     }
 
     getData() {
         const data = localStorage.getItem('weatherData');
-        console.log(data);
         if (data) {
             return JSON.parse(data);
         } else {
-            return {};
+            return []
         }
     }
 }
+
