@@ -1,29 +1,34 @@
 export class App {
     opwApiKey = '50d53005c0fd5f556bb4ef15224c4209';
-    city : string = "";
+    city: string = "";
     constructor() {
         const button = document.getElementById("find");
         let storage = this.getData();
         button.addEventListener("click", e => {
             e.preventDefault();
             const inputElement = (<HTMLInputElement>document.getElementById("city")).value;
-            if(storage.findIndex((val: string) => val == inputElement) == -1)
+            if (storage.findIndex((val: string) => val == inputElement) == -1)
                 this.getCityInfo(inputElement, true);
         });
 
-        if(storage.length) {
-            storage.forEach((cityName : string) => {
+        if (storage.length) {
+            storage.forEach((cityName: string) => {
                 this.getCityInfo(cityName, false);
             });
         }
     }
 
     async getCityInfo(city: string, save: boolean) {
-        const weather = await this.getWeather(city);
+        try {
+            const weather = await this.getWeather(city)
+            this.generateWeatherView(weather);
+        } catch (error) {
+            console.log("Nie znaleziono miasta");
+            return;
+        }
         this.city = city
-        if(save)
+        if (save)
             this.saveData(this.city);
-        this.generateWeatherView(weather);
     }
 
     async getWeather(city: string): Promise<any> {
@@ -33,7 +38,7 @@ export class App {
         return weatherData;
     }
 
-    generateWeatherView(data : any) { 
+    generateWeatherView(data: any) {
         let div = document.createElement("div");
         let spanWeatherStatus = document.createElement("span");
         let p = document.createElement("p");
@@ -58,14 +63,14 @@ export class App {
         div.appendChild(spanTemp);
     }
 
-    saveData(data: string) {        
+    saveData(data: string) {
         const currentData = this.getData();
-        const index = currentData.findIndex((val : string) => val == data);
-            if(index == -1) { 
-                currentData.push(data);
-                localStorage.setItem('weatherData', JSON.stringify(currentData));
-                return;
-            } 
+        const index = currentData.findIndex((val: string) => val == data);
+        if (index == -1) {
+            currentData.push(data);
+            localStorage.setItem('weatherData', JSON.stringify(currentData));
+            return;
+        }
     }
 
     getData() {
