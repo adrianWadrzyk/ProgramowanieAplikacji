@@ -1,0 +1,47 @@
+body {
+  background: lightblue;
+}
+
+.container-weather { 
+  display: flex;
+  justify-content: center;  
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.container { 
+  border: 1px solid black;
+  width: 10%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  margin: 10px;
+}
+
+.form { 
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#city { 
+  border: none;
+  border-bottom: solid 1px black;
+  background: inherit;
+}
+
+#find { 
+  border: none;
+  background: inherit;
+  margin-left: 10px;
+}
+
+#find:hover { 
+  cursor: pointer;
+}
+
+.pressure {
+  padding-bottom: 10px;
+}
