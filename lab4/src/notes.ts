@@ -1,13 +1,19 @@
-import { Note } from "./note";
+import { Interface } from "./interface";
+export class Notes implements Interface.INotes { 
+    notesList: Array<Interface.INote> = [];
 
-export class Notes { 
-    notesList: Array<Note> = [];
-
-    addNote(note: Note) { 
+    addNote(note: Interface.INote) { 
         this.notesList.push(note);
+    }
+
+    deleteNotes(e : Event) { 
+        console.log(e);
     }
 
     listNote() { 
         console.log(...this.notesList)
     }
+
+
 }
+

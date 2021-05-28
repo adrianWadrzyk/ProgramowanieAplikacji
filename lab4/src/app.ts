@@ -1,12 +1,15 @@
 import  {Note} from './note';
 import {Notes} from './notes';
+import {AppStorage} from './AppStorage';
 export class App {
     button: HTMLElement;
     Notes : Notes = new Notes;
-
+    AppStorage : AppStorage = new AppStorage;
+    id : number = 0;
     constructor() {
        this.button = document.getElementById("createNote");
-       this.bindButton();
+       this.bindButton();  
+       this.checkLocalStorage();
     }
 
     bindButton() { 
@@ -17,9 +20,11 @@ export class App {
     createNote = () => { 
         const title = (<HTMLInputElement>document.getElementById("title")).value;
         const description =(<HTMLInputElement>document.getElementById("description")).value;
-        const note = new Note(title, description);
+        const note = new Note(title, description, ++this.id);
         note.createView();
+        this.bindDelete(note);
         this.addNoteToList(note);
+        this.saveToLocalStorage(note);
     }
 
     addNoteToList(note: Note) { 
@@ -27,6 +32,30 @@ export class App {
         this.Notes.listNote();
     }
 
-   
+    saveToLocalStorage(note : Note) { 
+        this.AppStorage.saveData(note);
+    }
+
+    checkLocalStorage() { 
+        const data = this.AppStorage.getData();
+        if(data) 
+        {
+         data.forEach(note => {
+             const noteFromAppStorage = new Note(note.title, note.description, note.id);
+             this.bindDelete(noteFromAppStorage);
+             noteFromAppStorage.createView();
+             this.id = note.id;
+         });
+        }
+    }
+
+    bindDelete( note : Note) { 
+        note.deleteButton.addEventListener("click", () => { 
+            this.AppStorage.removeFromLocalStorage(note.id);
+            const conteiner = document.getElementById("conteiner");
+            conteiner.innerHTML="";
+            this.checkLocalStorage();
+        })
+    }
 }
 

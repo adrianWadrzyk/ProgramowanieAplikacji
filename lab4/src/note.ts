@@ -1,14 +1,19 @@
-export class Note {
+import { Interface} from './interface'
+export class Note implements Interface.INote{
     title: string;
     description: string;
     date : string;
     isPined : boolean;
     conteiner: HTMLElement = document.getElementById("conteiner");
-    constructor(title: string, descrpition: string) {
+    deleteButton: HTMLElement = document.createElement("button");
+    id: number;
+
+    constructor(title: string, descrpition: string, id:number) {
        this.title = title;
        this.description = descrpition;
        this.date = this.createDate();
        this.isPined = false;
+       this.id = id;
     }
     
     createDate() : string { 
@@ -28,16 +33,25 @@ export class Note {
     }
 
     createView(): void { 
+        const noteBlock: HTMLElement = document.createElement("div");
+
         const title: HTMLElement = document.createElement("p");
         const description: HTMLElement = document.createElement("p");
         const date: HTMLElement = document.createElement("p");
-
+        
+        noteBlock.dataset.noteId = `${this.id}`;
         title.textContent = this.title;
         description.textContent = this.description;
         date.textContent = this.date;
-
-        this.conteiner.appendChild(title);
-        this.conteiner.appendChild(description);
-        this.conteiner.appendChild(date);
+        this.deleteButton.id = "deleteButton";
+        this.deleteButton.textContent = "Delete this note";
+        
+        this.conteiner.appendChild(noteBlock);
+        noteBlock.appendChild(title);
+        noteBlock.appendChild(description);
+        noteBlock.appendChild(date);
+        noteBlock.appendChild(this.deleteButton);
     }
+
 }
+
