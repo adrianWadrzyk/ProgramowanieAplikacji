@@ -6,13 +6,14 @@ export class Note implements Interface.INote{
     isPined : boolean;
     conteiner: HTMLElement = document.getElementById("conteiner");
     deleteButton: HTMLElement = document.createElement("button");
+    pinButton: HTMLElement = document.createElement("button");
     id: number;
 
-    constructor(title: string, descrpition: string, id:number) {
+    constructor(title: string, descrpition: string, id:number, isPined?: boolean) {
        this.title = title;
        this.description = descrpition;
        this.date = this.createDate();
-       this.isPined = false;
+       this.isPined = isPined;
        this.id = id;
     }
     
@@ -43,14 +44,25 @@ export class Note implements Interface.INote{
         title.textContent = this.title;
         description.textContent = this.description;
         date.textContent = this.date;
-        this.deleteButton.id = "deleteButton";
+
+        this.pinButton.classList.add("deleteButton");
         this.deleteButton.textContent = "Delete this note";
-        
-        this.conteiner.appendChild(noteBlock);
+
+        this.pinButton.classList.add("pinButton");
+        this.pinButton.textContent = "Pin this note";
+
+        if(this.isPined)
+        {
+            this.conteiner.prepend(noteBlock);
+        } else {
+            this.conteiner.appendChild(noteBlock);
+        }
         noteBlock.appendChild(title);
         noteBlock.appendChild(description);
         noteBlock.appendChild(date);
         noteBlock.appendChild(this.deleteButton);
+        noteBlock.appendChild(this.pinButton);
+
     }
 
     

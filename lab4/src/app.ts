@@ -24,6 +24,7 @@ export class App {
         const note = new Note(title, description, ++this.id);
         note.createView();
         this.bindDelete(note);
+        this.bindPin(note);
         this.addNoteToList(note);
         this.saveToLocalStorage(note);
     }
@@ -42,8 +43,9 @@ export class App {
         if(data) 
         {
          data.forEach(note => {
-             const noteFromAppStorage = new Note(note.title, note.description, note.id);
+             const noteFromAppStorage = new Note(note.title, note.description, note.id, note.isPined);
              this.bindDelete(noteFromAppStorage);
+             this.bindPin(noteFromAppStorage);
              noteFromAppStorage.createView();
              this.id = note.id;
          });
@@ -55,6 +57,17 @@ export class App {
             this.AppStorage.removeFromLocalStorage(note.id);
             const conteiner = document.getElementById("conteiner");
             conteiner.innerHTML="";
+            this.checkLocalStorage();
+        })
+    }
+
+    bindPin(note: Note) { 
+        note.pinButton.addEventListener("click", () => { 
+            note.isPined = true;
+            this.AppStorage.removeFromLocalStorage(note.id);
+            this.AppStorage.saveData(note);
+            const conteiner = document.getElementById("conteiner");
+            conteiner.innerHTML = "";
             this.checkLocalStorage();
         })
     }
