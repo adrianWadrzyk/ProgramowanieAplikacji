@@ -38,7 +38,7 @@ export class Note implements Interface.INote{
         const title: HTMLElement = document.createElement("p");
         const description: HTMLElement = document.createElement("p");
         const date: HTMLElement = document.createElement("p");
-        
+
         noteBlock.dataset.noteId = `${this.id}`;
         title.textContent = this.title;
         description.textContent = this.description;
@@ -52,6 +52,8 @@ export class Note implements Interface.INote{
         noteBlock.appendChild(date);
         noteBlock.appendChild(this.deleteButton);
     }
+
+    
 
 }
 

@@ -1,7 +1,18 @@
 import {Interface} from './interface';
 
 export class AppStorage {
+  private static instance: AppStorage;
 
+  private constructor(){};
+
+  public static getInstance(): AppStorage { 
+    if (!AppStorage.instance) {
+      AppStorage.instance = new AppStorage();
+    }
+
+    return AppStorage.instance;
+  }
+  
   saveData(data: Interface.INote) {
     const currentData = this.getData();
     console.log(currentData);
@@ -27,6 +38,7 @@ export class AppStorage {
 
   removeFromLocalStorage(id : Interface.INote['id']) { 
     const notes = this.getData();
+    console.log(notes);
     notes.splice(notes.findIndex((e) => e.id === id, 1),1);
     localStorage.setItem('notesList', JSON.stringify(notes));
   }

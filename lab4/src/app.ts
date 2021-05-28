@@ -4,8 +4,9 @@ import {AppStorage} from './AppStorage';
 export class App {
     button: HTMLElement;
     Notes : Notes = new Notes;
-    AppStorage : AppStorage = new AppStorage;
+    AppStorage : AppStorage = AppStorage.getInstance();
     id : number = 0;
+
     constructor() {
        this.button = document.getElementById("createNote");
        this.bindButton();  
@@ -49,7 +50,7 @@ export class App {
         }
     }
 
-    bindDelete( note : Note) { 
+       bindDelete( note : Note) { 
         note.deleteButton.addEventListener("click", () => { 
             this.AppStorage.removeFromLocalStorage(note.id);
             const conteiner = document.getElementById("conteiner");
