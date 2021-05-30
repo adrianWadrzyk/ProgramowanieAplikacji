@@ -13,34 +13,31 @@ export class AppStorage implements Interface.IAppStorage{
     return AppStorage.instance;
   }
   
-  saveData(data: Interface.INote) {
-    const currentData = this.getData();
+  async saveData(data: Interface.INote) {
+    const currentData = JSON.parse(localStorage.getItem('notesList')) as Array<Interface.INote>;
     console.log(currentData);
     if (currentData != null) {
         currentData.push(data);
         localStorage.setItem('notesList', JSON.stringify(currentData));
-        this.getData()
-        return;
+        return Promise.resolve(currentData);
     }
 
     currentData.push(data);
     localStorage.setItem('notesList', JSON.stringify(currentData));
-    this.getData()
+    return Promise.resolve(currentData);
 }
 
-  getData() {
+  async getData() {
     const notes = JSON.parse(localStorage.getItem('notesList')) as Array<Interface.INote>;
-    if(notes)
-      return notes;
-    else 
-      return [];
+    return Promise.resolve(notes);
   }
 
-  removeFromLocalStorage(id : Interface.INote['id']) { 
-    const notes = this.getData();
-    console.log(notes);
+  async removeFromLocalStorage(id : Interface.INote['id']) { 
+    const notes = JSON.parse(localStorage.getItem('notesList')) as Array<Interface.INote>;
     notes.splice(notes.findIndex((e) => e.id === id, 1),1);
     localStorage.setItem('notesList', JSON.stringify(notes));
+
+    return Promise.resolve(notes);
   }
   
 }

@@ -44,13 +44,13 @@ export class App {
         const data = this.AppStorage.getData();
         if(data) 
         {
-         data.forEach(note => {
+         data.then( res => res.forEach(note => {
              const noteFromAppStorage = new Note(note.title, note.description, note.id, note.colorBackground, note.colorText, note.isPined);
              this.bindDelete(noteFromAppStorage);
              this.bindPin(noteFromAppStorage);
              noteFromAppStorage.createView();
              this.id = note.id;
-         });
+         }));
         }
     }
 

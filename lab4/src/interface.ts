@@ -15,8 +15,8 @@ export module Interface{
     }
 
     export interface IAppStorage {
-        saveData: (data: INote) =>(void);
-        removeFromLocalStorage: (id: INote['id']) => void,
-        getData: () => Array<INote>
+        saveData: (data: INote) => Promise<INote[]>;
+        removeFromLocalStorage: (id: INote['id']) => Promise<INote[]>,
+        getData: () => Promise<INote[]>
     }
 }
