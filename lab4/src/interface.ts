@@ -4,6 +4,8 @@ export module Interface{
         title: string;
         description: string;
         date : string;
+        colorBackground: string;
+        colorText: string;
         isPined : boolean;
         id: number;
     }
@@ -12,4 +14,9 @@ export module Interface{
         notesList: Array<INote>;
     }
 
+    export interface IAppStorage {
+        saveData: (data: INote) =>(void);
+        removeFromLocalStorage: (id: INote['id']) => void,
+        getData: () => Array<INote>
+    }
 }

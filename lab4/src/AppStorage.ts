@@ -1,6 +1,6 @@
 import {Interface} from './interface';
 
-export class AppStorage {
+export class AppStorage implements Interface.IAppStorage{
   private static instance: AppStorage;
 
   private constructor(){};

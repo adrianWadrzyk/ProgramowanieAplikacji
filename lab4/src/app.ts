@@ -21,7 +21,9 @@ export class App {
     createNote = () => { 
         const title = (<HTMLInputElement>document.getElementById("title")).value;
         const description =(<HTMLInputElement>document.getElementById("description")).value;
-        const note = new Note(title, description, ++this.id);
+        const colorBackground = (<HTMLInputElement>document.getElementById("colorBackground")).value;
+        const colorText = (<HTMLInputElement>document.getElementById("colorText")).value;
+        const note = new Note(title, description, ++this.id, colorBackground, colorText);
         note.createView();
         this.bindDelete(note);
         this.bindPin(note);
@@ -43,7 +45,7 @@ export class App {
         if(data) 
         {
          data.forEach(note => {
-             const noteFromAppStorage = new Note(note.title, note.description, note.id, note.isPined);
+             const noteFromAppStorage = new Note(note.title, note.description, note.id, note.colorBackground, note.colorText, note.isPined);
              this.bindDelete(noteFromAppStorage);
              this.bindPin(noteFromAppStorage);
              noteFromAppStorage.createView();

@@ -3,12 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pogodynka</title>
+    <title>NoteKeep</title>
   </head>
   <body>
     <main>
         <div class="note">
             <input type="text" id="title" value="Utwórz tytół">
+            
+            <label for="colorBackground">Kolor tła notatki</label>
+            <input type="color" id="colorBackground"></input>
+
+            <label for="colorText">Kolor tekstu</label>
+            <input type="color" id="colorText"></input>
+            
             <textarea id="description"> Opis notatki</textarea>
             <button id="createNote">Utwórz notatke</button>
         </div>

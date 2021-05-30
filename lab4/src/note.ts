@@ -4,16 +4,20 @@ export class Note implements Interface.INote{
     description: string;
     date : string;
     isPined : boolean;
+    colorBackground: string;
+    colorText: string;
+    id: number;
     conteiner: HTMLElement = document.getElementById("conteiner");
     deleteButton: HTMLElement = document.createElement("button");
     pinButton: HTMLElement = document.createElement("button");
-    id: number;
 
-    constructor(title: string, descrpition: string, id:number, isPined?: boolean) {
+    constructor(title: string, descrpition: string, id:number, colorBackground: string, colorText:string, isPined?: boolean) {
        this.title = title;
        this.description = descrpition;
        this.date = this.createDate();
        this.isPined = isPined;
+       this.colorBackground = colorBackground;
+       this.colorText = colorText;
        this.id = id;
     }
     
@@ -36,6 +40,10 @@ export class Note implements Interface.INote{
     createView(): void { 
         const noteBlock: HTMLElement = document.createElement("div");
 
+        noteBlock.style.backgroundColor = this.colorBackground;
+        noteBlock.style.color = this.colorText;
+        noteBlock.classList.add("noteBlock");
+        
         const title: HTMLElement = document.createElement("p");
         const description: HTMLElement = document.createElement("p");
         const date: HTMLElement = document.createElement("p");
