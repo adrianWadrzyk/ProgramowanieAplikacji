@@ -7,7 +7,8 @@ export module Interface{
         colorBackground: string;
         colorText: string;
         isPined : boolean;
-        id: number;
+        id: any;
+        idFromBase?:string;
     }
 
     export interface INotes { 
@@ -16,7 +17,7 @@ export module Interface{
 
     export interface IAppStorage {
         saveData: (data: INote) => Promise<INote[]>;
-        removeFromLocalStorage: (id: INote['id']) => Promise<INote[]>,
+        removeFromLocalStorage: (id: INote['id']) => Promise<void>,
         getData: () => Promise<INote[]>
     }
 }

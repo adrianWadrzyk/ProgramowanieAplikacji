@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 import {firebaseConfig} from './config';
 import {Interface} from './interface';
-class AppFirestorageStorage  implements Interface.IAppStorage{
+export class AppFirestorageStorage  implements Interface.IAppStorage{
     private static instance: Interface.IAppStorage;
     db: firebase.firestore.Firestore;
     
@@ -23,20 +23,27 @@ class AppFirestorageStorage  implements Interface.IAppStorage{
         return Promise.resolve([]);
     }
 
-    removeFromLocalStorage: (id: number) => Promise<Interface.INote[]>;
-
-    async getData() {
-        const res = await this.db.collection('notes').get().then(res => ({
-            data: res.docs.map((res) => res.data())
-        }));
-        const data = res.data as Interface.INote[];
-        return Promise.resolve(data);
+   async removeFromLocalStorage(id: string) { 
+        await this.db.collection('notes').doc(id).delete();
+        return Promise.resolve();
     };
 
-    async getAllTagsStorage() {
-        const notes = await this.getData();
-        const tags = notes.flatMap((v) => v.tags);
+    async getData() {
+           const res = await this.db.collection('notes').get().then(res => ({
+            data: res.docs.map((res) => ({
+                data: res.data(),
+                id: res.id
+            }))
+        }));
 
-        return Promise.resolve(tags);
-    }
+        // assign firebase ID to use in front-end
+        console.log(res);
+        const data = res.data.map((note) => ({
+            ...note.data,
+            idFromBase: note.id,
+        }));
+        
+        return Promise.resolve(data as Interface.INote[]);
+    };
+
 }

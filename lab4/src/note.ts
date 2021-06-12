@@ -7,11 +7,9 @@ export class Note implements Interface.INote{
     colorBackground: string;
     colorText: string;
     id: number;
-    conteiner: HTMLElement = document.getElementById("conteiner");
-    deleteButton: HTMLElement = document.createElement("button");
-    pinButton: HTMLElement = document.createElement("button");
+    idFromBase: string;
 
-    constructor(title: string, descrpition: string, id:number, colorBackground: string, colorText:string, isPined?: boolean) {
+    constructor(title: string, descrpition: string, id:number, colorBackground: string, colorText:string, isPined: boolean = false, idFromBase ="null") {
        this.title = title;
        this.description = descrpition;
        this.date = this.createDate();
@@ -19,6 +17,7 @@ export class Note implements Interface.INote{
        this.colorBackground = colorBackground;
        this.colorText = colorText;
        this.id = id;
+       this.idFromBase = idFromBase;
     }
     
     createDate() : string { 
@@ -47,29 +46,33 @@ export class Note implements Interface.INote{
         const title: HTMLElement = document.createElement("p");
         const description: HTMLElement = document.createElement("p");
         const date: HTMLElement = document.createElement("p");
+        const conteiner: HTMLElement = document.getElementById("conteiner");
+        const deleteButton: HTMLElement = document.createElement("button");
+        const pinButton: HTMLElement = document.createElement("button");
 
         noteBlock.dataset.noteId = `${this.id}`;
+        noteBlock.dataset.idFromBase = `${this.idFromBase}`;
         title.textContent = this.title;
         description.textContent = this.description;
         date.textContent = this.date;
 
-        this.pinButton.classList.add("deleteButton");
-        this.deleteButton.textContent = "Delete this note";
+        deleteButton.classList.add("deleteButton");
+        deleteButton.textContent = "Delete this note";
 
-        this.pinButton.classList.add("pinButton");
-        this.pinButton.textContent = "Pin this note";
+        pinButton.classList.add("pinButton");
+        pinButton.textContent = "Pin this note";
 
         if(this.isPined)
         {
-            this.conteiner.prepend(noteBlock);
+            conteiner.prepend(noteBlock);
         } else {
-            this.conteiner.appendChild(noteBlock);
+            conteiner.appendChild(noteBlock);
         }
         noteBlock.appendChild(title);
         noteBlock.appendChild(description);
         noteBlock.appendChild(date);
-        noteBlock.appendChild(this.deleteButton);
-        noteBlock.appendChild(this.pinButton);
+        noteBlock.appendChild(deleteButton);
+        noteBlock.appendChild(pinButton);
 
     }
 

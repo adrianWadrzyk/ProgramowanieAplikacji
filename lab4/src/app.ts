@@ -1,10 +1,12 @@
 import  {Note} from './note';
-import {Notes} from './notes';
 import {AppStorage} from './AppStorage';
+import {AppFirestorageStorage} from './firebaseApp';
+import {local} from './config';
+import {Interface} from './interface';
 export class App {
     button: HTMLElement;
-    Notes : Notes = new Notes;
     AppStorage : AppStorage = AppStorage.getInstance();
+    AppFirestorageStorage = AppFirestorageStorage.getInstance();
     id : number = 0;
 
     constructor() {
@@ -24,47 +26,66 @@ export class App {
         const colorBackground = (<HTMLInputElement>document.getElementById("colorBackground")).value;
         const colorText = (<HTMLInputElement>document.getElementById("colorText")).value;
         const note = new Note(title, description, ++this.id, colorBackground, colorText);
-        note.createView();
+        if(local)
+            this.saveToLocalStorage(note);
+        else 
+            this.saveToFireBase(note);
+
+        this.checkLocalStorage();
         this.bindDelete(note);
         this.bindPin(note);
-        this.addNoteToList(note);
-        this.saveToLocalStorage(note);
-    }
-
-    addNoteToList(note: Note) { 
-        this.Notes.addNote(note);
-        this.Notes.listNote();
     }
 
     saveToLocalStorage(note : Note) { 
         this.AppStorage.saveData(note);
     }
 
+    saveToFireBase(note: Note) { 
+        this.AppFirestorageStorage.saveData(note);
+    }
+
     checkLocalStorage() { 
-        const data = this.AppStorage.getData();
-        if(data) 
-        {
-         data.then( res => res.forEach(note => {
-             const noteFromAppStorage = new Note(note.title, note.description, note.id, note.colorBackground, note.colorText, note.isPined);
+        const conteiner = document.getElementById("conteiner");
+        conteiner.innerHTML="";
+        let data: Promise<Interface.INote[]>;
+        if(local)
+             data = this.AppStorage.getData();
+        else 
+             data = this.AppFirestorageStorage.getData();
+        if(data) {
+         data.then( res => 
+            {
+            res.forEach(note => {
+             const noteFromAppStorage = new Note(note.title, note.description, note.id, note.colorBackground, note.colorText, note.isPined, note.idFromBase);
+             noteFromAppStorage.createView();
              this.bindDelete(noteFromAppStorage);
              this.bindPin(noteFromAppStorage);
-             noteFromAppStorage.createView();
-             this.id = note.id;
-         }));
+             if(local)
+                this.id = note.id;
+            })});
         }
     }
 
        bindDelete( note : Note) { 
-        note.deleteButton.addEventListener("click", () => { 
-            this.AppStorage.removeFromLocalStorage(note.id);
+        const deleteButtons = document.querySelectorAll(".deleteButton");
+        deleteButtons.forEach(deleteButton => {
+            console.log(deleteButton);
+            deleteButton.addEventListener("click", (e) => { 
+            if(local)
+                this.AppStorage.removeFromLocalStorage(note.id);
+            else 
+                this.AppFirestorageStorage.removeFromLocalStorage(note.idFromBase)
             const conteiner = document.getElementById("conteiner");
             conteiner.innerHTML="";
             this.checkLocalStorage();
         })
+        })
     }
 
     bindPin(note: Note) { 
-        note.pinButton.addEventListener("click", () => { 
+        const pinButtons = document.querySelectorAll(".pinButton");
+        pinButtons.forEach(pinButton => {
+            pinButton.addEventListener("click", (e) => {
             note.isPined = true;
             this.AppStorage.removeFromLocalStorage(note.id);
             this.AppStorage.saveData(note);
@@ -72,6 +93,8 @@ export class App {
             conteiner.innerHTML = "";
             this.checkLocalStorage();
         })
+    });
+
     }
 }
 
