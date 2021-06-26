@@ -7,4 +7,4 @@ export const firebaseConfig = {
     appId: "1:50340280023:web:fbe554933e2529f891e292"
   };
 
-  export const local = false;
+  export const local = true;

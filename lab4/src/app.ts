@@ -46,8 +46,9 @@ export class App {
     }
 
     checkStorage() { 
-        console.log("Odświeżam...");
         const conteiner = document.getElementById("conteiner");
+        const conteinerPinned = document.getElementById("conteinerPinned");
+        conteinerPinned.innerHTML="";
         conteiner.innerHTML="";
         let data: Promise<Interface.INote[]>;
         if(local){
@@ -86,7 +87,8 @@ export class App {
         const pinButtons = document.querySelectorAll(`[data-button-pin-id="${note.id}"]`);
         pinButtons.forEach(pinButton => {
             pinButton.addEventListener("click",  async () => {
-            note.isPined = true;
+            note.isPined = !note.isPined;
+            console.log(note.isPined);
             if(local){
                 this.AppStorage.removeFromLocalStorage(note.id);
                 this.AppStorage.saveData(note);

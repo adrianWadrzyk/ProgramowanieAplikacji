@@ -41,26 +41,38 @@ export class Note implements Interface.INote{
         const description: HTMLElement = document.createElement("p");
         const date: HTMLElement = document.createElement("p");
         const conteiner: HTMLElement = document.getElementById("conteiner");
+        const conteinerPinned: HTMLElement = document.getElementById("conteinerPinned");
         const deleteButton: HTMLElement = document.createElement("button");
         const pinButton: HTMLElement = document.createElement("button");
 
+        const imageDelete: HTMLImageElement = document.createElement("img");
+        imageDelete.src = "icons/trash.svg";
+        imageDelete.alt = "trashIcon";
+
+        const imagePin: HTMLImageElement = document.createElement("img");
+        imagePin.src = "icons/office-push-pin.svg";
+        imagePin.alt = "pinIcon";
+
+
         noteBlock.dataset.noteId = `${this.id}`;
         noteBlock.dataset.idFromBase = `${this.idFromBase}`;
+
         title.textContent = this.title;
         description.textContent = this.description;
+        description.classList.add("noteDescription");
+
         date.textContent = this.date;
+        date.classList.add("date");
 
-        deleteButton.classList.add("deleteButton");
-        deleteButton.textContent = "Delete this note";
         deleteButton.dataset.buttonDeleteId = `${this.id}`;
-        pinButton.dataset.buttonPinId = `${this.id}`;
+        deleteButton.classList.add("deleteButton");
 
+        pinButton.dataset.buttonPinId = `${this.id}`;
         pinButton.classList.add("pinButton");
-        pinButton.textContent = "Pin this note";
 
         if(this.isPined)
         {
-            conteiner.prepend(noteBlock);
+            conteinerPinned.prepend(noteBlock);
         } else {
             conteiner.appendChild(noteBlock);
         }
@@ -68,7 +80,9 @@ export class Note implements Interface.INote{
         noteBlock.appendChild(description);
         noteBlock.appendChild(date);
         noteBlock.appendChild(deleteButton);
+        deleteButton.appendChild(imageDelete);
         noteBlock.appendChild(pinButton);
+        pinButton.appendChild(imagePin);
 
     }
 
