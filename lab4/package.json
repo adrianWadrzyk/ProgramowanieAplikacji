@@ -24,6 +24,10 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "firebase": "^8.6.3"
+    "@types/puppeteer": "^5.4.3",
+    "firebase": "^8.6.3",
+    "loader": "^2.1.1",
+    "puppeteer": "^10.0.0",
+    "puppeteer-tsd": "0.0.2"
   }
 }
