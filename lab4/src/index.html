@@ -7,19 +7,79 @@
   </head>
   <body>
     <main>
-        <div class="note">
-            <input type="text" id="title" value="Utwórz tytół">
-            
-            <label for="colorBackground">Kolor tła notatki</label>
-            <input type="color" id="colorBackground"></input>
+      <button id="addNote">Add note</button>
+      <div class="optionWrapper">
+        <div class="noteOptions">
+          <input type="text" id="title" value="Utwórz tytół" />
+          <textarea id="description">Opis notatki</textarea>
 
-            <label for="colorText">Kolor tekstu</label>
-            <input type="color" id="colorText"></input>
-            
-            <textarea id="description"> Opis notatki</textarea>
+          <div class="colorPicker">
+            <label class="conteinerRadioOption">
+              <input
+                type="radio"
+                id="color1"
+                name="note-color"
+                checked
+                value="#262626"
+              />
+              <span
+                class="customRadio"
+                style="background-color: #262626"
+              ></span>
+            </label>
+            <label class="conteinerRadioOption">
+              <input
+                type="radio"
+                id="color2"
+                name="note-color"
+                value="#662424"
+              />
+              <span
+                class="customRadio"
+                style="background-color: #662424"
+              ></span>
+            </label>
+            <label class="conteinerRadioOption">
+              <input
+                type="radio"
+                id="color3"
+                name="note-color"
+                value="#7b4f00"
+              />
+              <span
+                class="customRadio"
+                style="background-color: #7b4f00"
+              ></span>
+            </label>
+            <label class="conteinerRadioOption">
+              <input
+                type="radio"
+                id="color4"
+                name="note-color"
+                value="#007b3d"
+              />
+              <span
+                class="customRadio"
+                style="background-color: #007b3d"
+              ></span>
+            </label>
+          </div>
+
+          <div class="wrapper">
+            <label class="switch">
+              <input type="checkbox" id="pinned" />
+              <span class="slider round"></span>
+            </label>
+            <span class="pinText"> Przypnij notatke</span>
+          </div>
+
+          <div class="wrapper">
             <button id="createNote">Utwórz notatke</button>
+            <button id="cancel">Anuluj</button>
+          </div>
         </div>
-        <div id="conteiner"></div>
+      </div>
+      <div id="conteiner"></div>
     </main>
     <script src="index.js"></script>
   </body>

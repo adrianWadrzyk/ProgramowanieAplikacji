@@ -21,17 +21,17 @@ export class App {
 
     // użycie funkcji strzałkowej ze względu na zmieniający się kontekst this ( w innym przypadku this wskazuje na button)
     createNote = () => { 
+        (<HTMLElement>document.querySelector(".optionWrapper")).style.display = "none";
         const title = (<HTMLInputElement>document.getElementById("title")).value;
         const description =(<HTMLInputElement>document.getElementById("description")).value;
-        const colorBackground = (<HTMLInputElement>document.getElementById("colorBackground")).value;
-        const colorText = (<HTMLInputElement>document.getElementById("colorText")).value;
-        const note = new Note(title, description, ++this.id, colorBackground, colorText);
+        const colorBackground = (<HTMLInputElement>document.querySelector('input[name="note-color"]:checked')).value;
+        const pinned = (<HTMLInputElement>document.querySelector('#pinned')).checked;
+        const note = new Note(title, description, ++this.id, colorBackground, "#e7e7e7", pinned);
         if(local)
             this.saveToLocalStorage(note);
         else 
             this.saveToFireBase(note);
 
-        console.log(this.id);
         this.bindDelete(note);
         this.bindPin(note);
         this.checkStorage();

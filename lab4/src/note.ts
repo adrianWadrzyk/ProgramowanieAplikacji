@@ -9,7 +9,7 @@ export class Note implements Interface.INote{
     id: number;
     idFromBase: string;
 
-    constructor(title: string, descrpition: string, id:number, colorBackground: string, colorText:string, isPined: boolean = false, idFromBase ="null") {
+    constructor(title: string, descrpition: string, id:number, colorBackground: string, colorText:string, isPined: boolean, idFromBase ="null") {
        this.title = title;
        this.description = descrpition;
        this.date = this.createDate();
@@ -24,12 +24,6 @@ export class Note implements Interface.INote{
         const date = new Date();
         const now:string = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`
         return now;
-    }
-
-    log() { 
-        console.log(this.title);
-        console.log(this.description);
-        console.log(this.date);
     }
 
     pinNote() : void { 

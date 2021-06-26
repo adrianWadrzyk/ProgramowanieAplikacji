@@ -1,21 +1,231 @@
+* { 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.optionWrapper { 
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  background-color: rgba($color: #000000, $alpha: 0.6);
+}
+
+.noteOptions { 
+  width: 500px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+
+  & * {
+    margin: 10px 0;
+  }
+
+  & #description, #title { 
+    padding: 5px 10px;
+    border-radius: 10px;
+    border-color: white;
+  }
+}
+
+button { 
+  background-color: none;
+  border: 1px solid black;
+  transition: background-color 1s;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba($color: #000000, $alpha: 0.3);
+  }
+}
+
+#addNote { 
+  position: absolute;
+  right: 10px;
+  top:10px;
+  height: 30px;
+  width: 150px;
+}
+
 #conteiner { 
   display: flex;
+  background-color: red;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 60px 20px;
 }
 
 .noteBlock { 
-  width: 200px;
+  width: 250px;
   height: 250px;
-  color: white;
   display: flex;
   flex-direction:  column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  color: white;
+  align-items: flex-start;
   position: relative;
+  
+  & button { 
+    position:absolute;
+    right: 5px;
+    padding: 10px;
+
+  }
+}
+.deleteButton { 
+  bottom: 10px;
 }
 
 .pinButton { 
-  position:absolute;
-  top: 0;
-  color: white;
-  right: 0;
+  top: 10px;
+}
+
+#createNote { 
+  display: block;
+  width: 50%;
+}
+
+#description { 
+  height: 150px;
+  resize: none;
+}
+
+.wrapper { 
+  display: flex;
+  &  > button { 
+    width: 45%;
+    height: 30px;
+    padding: 5px;
+    margin: 0 1.25%;
+    
+  }
+
+  & > .pinText { 
+    margin-left:10px;
+  }
+}
+
+.colorPicker { 
+  display: flex;
+}
+
+.conteinerRadioOption {
+  display: flex;
+  cursor: pointer;
+  font-size: 22px;
+  margin: 0 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  & input { 
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  & .customRadio { 
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+  }
+ 
+  
+  & .customRadio:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  
+}
+
+.conteinerRadioOption:hover input ~ .customRadio { 
+  background-color: #ccc;
+}
+
+
+.conteinerRadioOption input:checked ~ .customRadio { 
+  border: 2px solid white;
+}
+
+.conteinerRadioOption input:checked ~ .customRadio:after {
+  display: block;
+}
+
+.switch {
+  position: relative;
+  display: flex;
+  width: 50px;
+  height: 20px;
+
+
+  & input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .slider { 
+      background-color: #2196F3;
+    }
+
+    &:focus + .slider { 
+      box-shadow: 0 0 1px #2196F3;    
+    }
+
+    &:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+  }
+
+  & .slider { 
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    margin: 0;
+
+
+    &::before{
+      position: absolute;
+      content: "";
+      height: 15px;
+      width: 15px;
+      left: 7px;
+      bottom: 3px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+  }
+
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
 }
