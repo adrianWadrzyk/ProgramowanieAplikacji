@@ -37,7 +37,6 @@ export class AppFirestorageStorage  implements Interface.IAppStorage{
         }));
 
         // assign firebase ID to use in front-end
-        console.log(res);
         const data = res.data.map((note) => ({
             ...note.data,
             idFromBase: note.id,

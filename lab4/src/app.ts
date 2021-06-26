@@ -12,7 +12,7 @@ export class App {
     constructor() {
        this.button = document.getElementById("createNote");
        this.bindButton();  
-       this.checkLocalStorage();
+       this.checkStorage();
     }
 
     bindButton() { 
@@ -31,9 +31,10 @@ export class App {
         else 
             this.saveToFireBase(note);
 
-        this.checkLocalStorage();
+        console.log(this.id);
         this.bindDelete(note);
         this.bindPin(note);
+        this.checkStorage();
     }
 
     saveToLocalStorage(note : Note) { 
@@ -44,57 +45,60 @@ export class App {
         this.AppFirestorageStorage.saveData(note);
     }
 
-    checkLocalStorage() { 
+    checkStorage() { 
+        console.log("Odświeżam...");
         const conteiner = document.getElementById("conteiner");
         conteiner.innerHTML="";
         let data: Promise<Interface.INote[]>;
-        if(local)
-             data = this.AppStorage.getData();
-        else 
-             data = this.AppFirestorageStorage.getData();
+        if(local){
+            data =  this.AppStorage.getData();
+        }
+        else {
+            data = this.AppFirestorageStorage.getData();
+        }
         if(data) {
-         data.then( res => 
-            {
+         data.then( res => {
             res.forEach(note => {
+             note.id > this.id ? this.id = note.id : this.id;
              const noteFromAppStorage = new Note(note.title, note.description, note.id, note.colorBackground, note.colorText, note.isPined, note.idFromBase);
              noteFromAppStorage.createView();
              this.bindDelete(noteFromAppStorage);
              this.bindPin(noteFromAppStorage);
-             if(local)
-                this.id = note.id;
-            })});
+            })
+        });
         }
     }
 
        bindDelete( note : Note) { 
-        const deleteButtons = document.querySelectorAll(".deleteButton");
+        const deleteButtons = document.querySelectorAll(`[data-button-delete-id="${note.id}"]`);
         deleteButtons.forEach(deleteButton => {
-            console.log(deleteButton);
-            deleteButton.addEventListener("click", (e) => { 
+            deleteButton.addEventListener("click",  async () => { 
             if(local)
-                this.AppStorage.removeFromLocalStorage(note.id);
+                 await this.AppStorage.removeFromLocalStorage(note.id);
             else 
-                this.AppFirestorageStorage.removeFromLocalStorage(note.idFromBase)
-            const conteiner = document.getElementById("conteiner");
-            conteiner.innerHTML="";
-            this.checkLocalStorage();
+                await this.AppFirestorageStorage.removeFromLocalStorage(note.idFromBase)
+          this.checkStorage();
         })
         })
     }
 
     bindPin(note: Note) { 
-        const pinButtons = document.querySelectorAll(".pinButton");
+        const pinButtons = document.querySelectorAll(`[data-button-pin-id="${note.id}"]`);
         pinButtons.forEach(pinButton => {
-            pinButton.addEventListener("click", (e) => {
+            pinButton.addEventListener("click",  async () => {
             note.isPined = true;
-            this.AppStorage.removeFromLocalStorage(note.id);
-            this.AppStorage.saveData(note);
-            const conteiner = document.getElementById("conteiner");
-            conteiner.innerHTML = "";
-            this.checkLocalStorage();
+            if(local){
+                this.AppStorage.removeFromLocalStorage(note.id);
+                this.AppStorage.saveData(note);
+            }
+             else {
+                 await this.AppFirestorageStorage.removeFromLocalStorage(note.idFromBase)
+                 await this.AppFirestorageStorage.saveData(note);
+             }     
+
+             this.checkStorage();
         })
     });
-
     }
 }
 

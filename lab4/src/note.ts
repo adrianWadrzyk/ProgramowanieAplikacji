@@ -58,6 +58,8 @@ export class Note implements Interface.INote{
 
         deleteButton.classList.add("deleteButton");
         deleteButton.textContent = "Delete this note";
+        deleteButton.dataset.buttonDeleteId = `${this.id}`;
+        pinButton.dataset.buttonPinId = `${this.id}`;
 
         pinButton.classList.add("pinButton");
         pinButton.textContent = "Pin this note";
