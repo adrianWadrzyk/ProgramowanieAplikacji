@@ -11,8 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^26.0.23",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.2",
+    "jest": "^27.0.5",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "source-map-loader": "^0.2.4",
@@ -28,6 +30,7 @@
     "firebase": "^8.6.3",
     "loader": "^2.1.1",
     "puppeteer": "^10.0.0",
-    "puppeteer-tsd": "0.0.2"
+    "puppeteer-tsd": "0.0.2",
+    "ts-jest": "^27.0.3"
   }
 }

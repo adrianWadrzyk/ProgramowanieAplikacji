@@ -52,12 +52,13 @@ export class Note implements Interface.INote{
         const imagePin: HTMLImageElement = document.createElement("img");
         imagePin.src = "icons/office-push-pin.svg";
         imagePin.alt = "pinIcon";
-
+        
 
         noteBlock.dataset.noteId = `${this.id}`;
         noteBlock.dataset.idFromBase = `${this.idFromBase}`;
 
         title.textContent = this.title;
+
         description.textContent = this.description;
         description.classList.add("noteDescription");
 
@@ -86,7 +87,11 @@ export class Note implements Interface.INote{
 
     }
 
-    
+    // Funkcje stworzone na potrzeby testów JEST.
+    checkTitle(title: string) : string{ 
+        if(title.length == 0) 
+            return "Nie może być pusty";
+    }
 
 }
 

@@ -36,9 +36,8 @@ export class AppStorage implements Interface.IAppStorage {
     notes.splice(
       notes.findIndex((e) => e.id === id, 1),
       1);
-    console.log(notes);
     localStorage.setItem("notesList", JSON.stringify(notes));
-
+  
     return Promise.resolve();
   }
 }
