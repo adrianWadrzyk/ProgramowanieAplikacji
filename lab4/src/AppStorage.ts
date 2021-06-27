@@ -1,4 +1,5 @@
 import { Interface } from "./interface";
+import { Note } from "./note";
 
 export class AppStorage implements Interface.IAppStorage {
   private static instance: AppStorage;

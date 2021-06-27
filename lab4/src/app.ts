@@ -3,15 +3,19 @@ import {AppStorage} from './AppStorage';
 import {AppFirestorageStorage} from './firebaseApp';
 import {local} from './config';
 import {Interface} from './interface';
+import { Touchscreen } from 'puppeteer';
 export class App {
     button: HTMLElement;
     AppStorage : AppStorage = AppStorage.getInstance();
     AppFirestorageStorage = AppFirestorageStorage.getInstance();
     id : number = 0;
 
-    constructor() {
+    constructor(editing : boolean , id ?  : number ) {
        this.button = document.getElementById("createNote");
-       this.bindButton();  
+       if(editing == false)
+            {
+                this.bindButton();  
+            } 
        this.checkStorage();
     }
 
@@ -20,18 +24,19 @@ export class App {
     }       
 
     // użycie funkcji strzałkowej ze względu na zmieniający się kontekst this ( w innym przypadku this wskazuje na button)
-    createNote = () => { 
+     createNote = () => { 
         (<HTMLElement>document.querySelector(".optionWrapper")).style.display = "none";
         const title = (<HTMLInputElement>document.getElementById("title")).value;
         const description =(<HTMLInputElement>document.getElementById("description")).value;
         const colorBackground = (<HTMLInputElement>document.querySelector('input[name="note-color"]:checked')).value;
         const pinned = (<HTMLInputElement>document.querySelector('#pinned')).checked;
         const note = new Note(title, description, ++this.id, colorBackground, "#e7e7e7", pinned);
+        console.log(note);
         if(local)
             this.saveToLocalStorage(note);
         else 
             this.saveToFireBase(note);
-
+            
         this.bindDelete(note);
         this.bindPin(note);
         this.checkStorage();
@@ -70,10 +75,11 @@ export class App {
         }
     }
 
-       bindDelete( note : Note) { 
+       bindDelete( note : Note ) { 
         const deleteButtons = document.querySelectorAll(`[data-button-delete-id="${note.id}"]`);
         deleteButtons.forEach(deleteButton => {
-            deleteButton.addEventListener("click",  async () => { 
+            deleteButton.addEventListener("click",  async (e) => { 
+                e.stopPropagation();
             if(local)
                  await this.AppStorage.removeFromLocalStorage(note.id);
             else 
@@ -86,7 +92,8 @@ export class App {
     bindPin(note: Note) { 
         const pinButtons = document.querySelectorAll(`[data-button-pin-id="${note.id}"]`);
         pinButtons.forEach(pinButton => {
-            pinButton.addEventListener("click",  async () => {
+            pinButton.addEventListener("click",  async (e) => {
+            e.stopPropagation();
             note.isPined = !note.isPined;
             console.log(note.isPined);
             if(local){

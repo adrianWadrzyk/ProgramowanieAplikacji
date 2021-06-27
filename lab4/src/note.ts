@@ -1,4 +1,8 @@
 import { Interface} from './interface'
+import { AppFirestorageStorage } from './firebaseApp';
+import { AppStorage } from './AppStorage';
+import { local } from './config';
+import { App } from './app';
 export class Note implements Interface.INote{
     title: string;
     description: string;
@@ -84,7 +88,7 @@ export class Note implements Interface.INote{
         deleteButton.appendChild(imageDelete);
         noteBlock.appendChild(pinButton);
         pinButton.appendChild(imagePin);
-
+        noteBlock.addEventListener("click", (e) => {this.editNote(this, e )});
     }
 
     // Funkcje stworzone na potrzeby testów JEST.
@@ -93,5 +97,58 @@ export class Note implements Interface.INote{
             return "Nie może być pusty";
     }
 
+    editNote(note : Interface.INote, e : Event) {
+        let editing = true;
+        const app = new App(true, note.id);
+        const optionWrapper : HTMLElement= document.querySelector(".optionWrapper");
+        optionWrapper.style.display = "flex";   
+        const textInput = document.querySelector("#title")
+        textInput.textContent = note.title;
+        const desc = document.querySelector("#description")
+        desc.textContent = note.description;
+        const pinn = <HTMLInputElement> document.querySelector("#pinned");
+        pinn.checked = note.isPined ? true : false;
+        const color = <HTMLInputElement> document.querySelector(`input[value="${note.colorBackground}"]`);
+        color.checked = true;
+        
+        const buttonCreate = document.getElementById("createNote");
+        buttonCreate.style.display = "none";
+
+        const buttonEdit = document.getElementById("editNote");
+        buttonEdit.style.display = "block";
+
+        const colorBackground = (<HTMLInputElement>document.querySelector('input[name="note-color"]:checked')).value;
+        const cancelButton = document.querySelector("#cancel");
+
+        cancelButton.addEventListener("click" , ()=> {
+            buttonCreate.style.display = "block"; 
+        })
+
+        const afterEditing  = () =>  { 
+            buttonCreate.style.display = "block";
+            buttonEdit.style.display = "none";
+            optionWrapper.style.display = "none";
+            app.createNote();
+        }
+
+        buttonEdit.addEventListener("click", () => { 
+            if(editing) {
+                if(local) { 
+                    const AppStor : AppStorage = AppStorage.getInstance();
+                    AppStor.removeFromLocalStorage(note.id);
+                    afterEditing()
+                } else { 
+                    const AppStor  = AppFirestorageStorage.getInstance();
+                    AppStor.removeFromLocalStorage(note.idFromBase);
+                    afterEditing()
+                }
+            }
+        })
+
+
+
+    }
+
+    
 }
 
